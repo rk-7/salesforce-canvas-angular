@@ -22,7 +22,7 @@ export class CallbackComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    console.log('request in angular', this.res);
+    // console.log('request in angular', this.res);
   }
 
 }
