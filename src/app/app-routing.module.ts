@@ -2,15 +2,20 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CallbackComponent } from './callback/callback.component';
 
-const routes: Routes = [{
-  // path: '', redirectTo:'', pathMatch: 'full'
-  path: '', component: CallbackComponent, pathMatch: 'full'
-}];
+const routes: Routes = [
+  {
+    path: '',
+    component: CallbackComponent,
+    pathMatch: 'full',
+  },
+];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {
-    initialNavigation: 'enabled'
-})],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(routes, {
+      initialNavigation: 'enabled',
+    }),
+  ],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
