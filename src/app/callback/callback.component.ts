@@ -16,9 +16,9 @@ export class CallbackComponent implements OnInit {
     @Optional()
     @Inject(RESPONSE)
     private readonly res: Response) {
-    if (isPlatformServer(this.platformId)) {
-      res.status(404);
-    }
+    // if (isPlatformServer(this.platformId)) {
+    //   res.status(404);
+    // }
    }
 
   ngOnInit(): void {
