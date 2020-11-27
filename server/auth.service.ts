@@ -1,36 +1,34 @@
 import { createHmac } from 'crypto';
-import { Observable, of, throwError } from 'rxjs';
-
+interface AuthResult {
+  req: any; user: any;
+}
 export class AuthService {
-    constructor() {
+  constructor(private readonly canvasConsumerSecret?: string) {}
+  checkAuthenticated(body: any): AuthResult {
+    const bodyArray = body.signed_request.split('.');
+    const consumerSecret = bodyArray[0];
+    const encodedEnvelope = bodyArray[1];
 
+    const check = this.getHmac(encodedEnvelope);
+    if (check === consumerSecret) {
+      const envelope = JSON.parse(
+        Buffer.from(encodedEnvelope, 'base64').toString('ascii')
+      );
+      return {
+        user: envelope.context.user.userName,
+        req: JSON.stringify(envelope),
+      };
     }
-    checkAuthenticated(body: any): Observable<any> {
-        const bodyArray = body.signed_request.split('.');
-        const consumerSecret = bodyArray[0];
-        const encoded_envelope = bodyArray[1];
-        const consumerSecretApp = process.env.CANVAS_CONSUMER_SECRET; /* this.configService.get<string>(
-          'CANVAS_CONSUMER_SECRET'
-        ); */
-        if (!consumerSecretApp) { throw Error('Canvas app is not configured properly!'); }
-        const check = createHmac('sha256', consumerSecretApp)
-          .update(encoded_envelope)
-          .digest('base64');
+    throw Error('User is not authenticated');
+  }
 
-        if (check === consumerSecret) {
-          const envelope = JSON.parse(
-            Buffer.from(encoded_envelope, 'base64').toString('ascii')
-          );
-          // req.session.salesforce = envelope;
-          console.log('got the session object:');
-          console.log(envelope);
-          console.log(JSON.stringify(envelope));
-          return of({
-            user: envelope.context.user.userName,
-            req: JSON.stringify(envelope),
-          });
-        } else {
-          return throwError('Authentication failed');
-        }
-      }
+  private getHmac(encodedEnvelope: any): string {
+    if (!this.canvasConsumerSecret) {
+      throw Error('Canvas app is not configured properly!');
+    }
+    const check = createHmac('sha256', this.canvasConsumerSecret)
+      .update(encodedEnvelope)
+      .digest('base64');
+    return check;
+  }
 }
