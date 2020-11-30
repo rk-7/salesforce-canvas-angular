@@ -9,6 +9,20 @@ To run development server for the app, you may run the app in two modes dependin
 1. Signed Request flow  - A signed request is sent to the server of the Canvas app using POST method. Use SSR (Server side rendered app).
 2. OAuth - In the [OAuth flow](https://developer.salesforce.com/docs/atlas.en-us.platform_connect.meta/platform_connect/user_flow_oauth.htm), you may be able to run CSR (Client side rendered) app.
 
+**Pre-requisites**:
+
+Set the following environment variables or simply create an .env file for the same:
+
+```.env
+# ./.env file contents
+COOKIE_SECRET= <put the secret here>
+CANVAS_CONSUMER_SECRET= <put the consumer secret here>
+```
+| Variable | Description |
+|-----------|--------------|
+| COOKIE_SECRET | A random string consisting combination of different characters. This will be used to sign the cookies |
+| CANVAS_CONSUMER_SECRET | This can be obtained from the details page of the Canvas app on Salesforce. You may refer [Quick start](https://developer.salesforce.com/docs/atlas.en-us.platform_connect.meta/platform_connect/quick_start_create_canvas_app.htm) on Salesforce documentation. |
+
 ### SSR (Server side rendererd)
 
 Run `npm run dev:ssr` for a dev server that is server side rendered. Navigate to `http://localhost:3000/`. The app will autmatically reload if you change any of the source files
